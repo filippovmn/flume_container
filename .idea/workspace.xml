@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fb0b36dd-4491-423b-ad42-e482ec4c8965" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/integration/prj/CommonContainer.java" afterPath="$PROJECT_DIR$/src/main/java/ru/integration/prj/CommonContainer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/integration/prj/Container.java" afterPath="$PROJECT_DIR$/src/main/java/ru/integration/prj/Container.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/integration/prj/config/source/initSource.java" afterPath="$PROJECT_DIR$/src/main/java/ru/integration/prj/config/source/initSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/integration/prj/config/source/initSourceInMemory.java" afterPath="$PROJECT_DIR$/src/main/java/ru/integration/prj/config/source/initSourceInMemory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/integration/prj/simpleConfigurator.java" afterPath="$PROJECT_DIR$/src/main/java/ru/integration/prj/simpleConfigurator.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -36,8 +32,8 @@
       <file leaf-file-name="CommonContainer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/ru/integration/prj/CommonContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="705">
-              <caret line="63" column="25" lean-forward="false" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+            <state relative-caret-position="221">
+              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -276,7 +272,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="android.dex.compiler" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/flume-http-sink-advanced" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -737,8 +733,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ru/integration/prj/CommonContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="63" column="25" lean-forward="false" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+        <state relative-caret-position="221">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

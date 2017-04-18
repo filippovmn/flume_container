@@ -4,7 +4,6 @@ import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.integration.prj.config.source.initSourceInMemory;
 
 
