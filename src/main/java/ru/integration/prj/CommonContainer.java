@@ -4,12 +4,13 @@ import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.integration.prj.config.source.initSourceEmbeddedDB;
+import ru.integration.prj.config.source.initSourceInMemory;
 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -21,7 +22,7 @@ public class CommonContainer {
     HashMap<String,Application> agents;
 
     @Autowired
-    initSourceEmbeddedDB source;
+    initSourceInMemory source;
     @Autowired
     AbstractConfigurationProvider provider;
 
@@ -36,17 +37,20 @@ public class CommonContainer {
         }catch(Exception ex){
             return false;
         }
-    }
+    };
     public void start(){
         for(Map.Entry<String ,Application> entry:agents.entrySet()){
             entry.getValue().start();
         }
-    }
+    };
 
     public void stop(){
         for(Map.Entry<String ,Application> entry:agents.entrySet()){
             entry.getValue().stop();
         }
-    }
+    };
 
+    public void addAgent(String agent, Properties properties){
+
+    };
 }

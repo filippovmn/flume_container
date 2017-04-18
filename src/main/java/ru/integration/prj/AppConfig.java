@@ -12,6 +12,7 @@ public class AppConfig {
     @Autowired
     public Container commonContainer;
 
-
-
+    public Container getCommonContainer() {
+        return commonContainer;
+    }
 }
