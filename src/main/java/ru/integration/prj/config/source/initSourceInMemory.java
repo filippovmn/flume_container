@@ -1,12 +1,14 @@
 package ru.integration.prj.config.source;
 
 import org.apache.flume.node.Application;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 /**
  * Created by mfilippov on 2017-04-18.
  */
+@Component
 public class initSourceInMemory {
 
     HashMap<String,Properties> source;
@@ -28,6 +30,11 @@ public class initSourceInMemory {
         }
         return agents;
     }
+
+    public void addAgent(String agent,Properties properties){
+        source.put(agent,properties);
+    }
+
     public void deleteAgent(String agent){
         source.remove(agent);
     }

@@ -10,9 +10,11 @@ public interface Container {
 
     public boolean init();
 
-    public void start();
+    public void startAll();
 
-    public void stop();
+    public void stopAll();
 
     public void addAgent(String agent, Properties properties);
+
+    public void deleteAgent(String agent);
 }
