@@ -1,6 +1,7 @@
-package ru.integration.prj;
+package ru.integration.flumecontainer;
 
 
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -17,4 +18,6 @@ public interface Container {
     public void addAgent(String agent, Properties properties);
 
     public void deleteAgent(String agent);
+
+    public List<String> getAllAgentNames();
 }

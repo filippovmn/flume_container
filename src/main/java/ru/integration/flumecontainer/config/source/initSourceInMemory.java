@@ -1,8 +1,9 @@
-package ru.integration.prj.config.source;
+package ru.integration.flumecontainer.config.source;
 
-import org.apache.flume.node.Application;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -11,21 +12,27 @@ import java.util.*;
 @Component
 public class initSourceInMemory {
 
-    HashMap<String,Properties> source;
+    HashMap<String,Properties> source=new HashMap();
+
     {
-        Properties props=new Properties();
-        //props.put();
-        source.put("agent",props);
+        try {
+            Properties props=new Properties();
+            props.load(new FileInputStream("src/main/resources/test.properties"));
+            source.put("my-agent",props);
+        } catch (IOException e) {
+            System.out.println("error "+e.toString());
+        }
     }
     public Properties getProperties(String agent){
         Properties properties=source.get(agent);
+        System.out.println(properties.toString());
         return properties;
     }
-    public void setProperties(String agent){
-    }
+
     public List<String> getAllAgents(){
         ArrayList<String> agents=new ArrayList<String>();
         for(Map.Entry<String ,Properties> entry:source.entrySet()){
+            System.out.println("agent: "+entry.getKey());
             agents.add(entry.getKey());
         }
         return agents;

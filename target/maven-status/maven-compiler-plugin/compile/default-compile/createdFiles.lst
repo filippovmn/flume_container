@@ -1,0 +1,6 @@
+ru\integration\prj\config\source\initSourceInMemory.class
+ru\integration\prj\AppConfig.class
+ru\integration\prj\config\source\initSource.class
+ru\integration\prj\CommonContainer.class
+ru\integration\prj\Container.class
+ru\integration\prj\simpleConfigurator.class

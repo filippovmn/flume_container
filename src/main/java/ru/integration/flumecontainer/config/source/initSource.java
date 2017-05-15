@@ -1,4 +1,4 @@
-package ru.integration.prj.config.source;
+package ru.integration.flumecontainer.config.source;
 
 import java.util.List;
 import java.util.Properties;

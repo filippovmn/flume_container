@@ -1,10 +1,10 @@
-package ru.integration.prj;
+package ru.integration.flumecontainer;
 
 import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.integration.prj.config.source.initSourceInMemory;
+import ru.integration.flumecontainer.config.source.initSourceInMemory;
 
 
 import java.util.HashMap;
@@ -17,9 +17,9 @@ import java.util.Properties;
  * Created by mfilippov on 2017-04-13.
  */
 @Component
-public class CommonContainer {
+public class CommonContainer implements Container {
 
-    HashMap<String,Application> agents;
+    HashMap<String,Application> agents=new HashMap<String, Application>();
 
     @Autowired
     initSourceInMemory source;
@@ -36,18 +36,27 @@ public class CommonContainer {
             }
             return true;
         }catch(Exception ex){
+            System.out.println("error: "+ex.toString());
             return false;
         }
     };
     public void startAll(){
         for(Map.Entry<String ,Application> entry:agents.entrySet()){
+            try {
             entry.getValue().start();
+            }catch (Exception e){
+                System.out.println("error: "+e.toString());
+            }
         }
     };
 
     public void stopAll(){
         for(Map.Entry<String ,Application> entry:agents.entrySet()){
-            entry.getValue().stop();
+            try {
+                entry.getValue().stop();
+            }catch (Exception e){
+                System.out.println("error: "+e.toString());
+            }
         }
     };
 
@@ -63,5 +72,8 @@ public class CommonContainer {
         agents.get(agent).stop();
         agents.remove(agent);
         source.deleteAgent(agent);
+    }
+    public List<String> getAllAgentNames(){
+        return source.getAllAgents();
     }
 }
