@@ -1,6 +1,8 @@
 package ru.integration.flumecontainer;
 
 
+import ru.integration.flumecontainer.config.source.InitSource;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -18,6 +20,8 @@ public interface Container {
     public void addAgent(String agent, Properties properties);
 
     public void deleteAgent(String agent);
+
+    public void setSource(InitSource source);
 
     public List<String> getAllAgentNames();
 }

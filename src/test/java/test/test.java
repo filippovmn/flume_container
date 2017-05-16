@@ -1,7 +1,6 @@
 package test;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.integration.flumecontainer.AppConfig;
 import ru.integration.flumecontainer.Container;
 
 /**
@@ -20,17 +19,17 @@ public class test {
 
             System.out.println(beanName + " : " + ctx.getBean(beanName).getClass().toString());
         }
-        Container container= (Container) ctx.getBean("commonContainer");
+        Container container= (Container) ctx.getBean("container");
         if(container!=null) {
             System.out.println("start");
             container.init();
             try {
                 Thread.sleep(2000);
+                container.startAll();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            container.startAll();
-
             container.stopAll();
         }else {
             System.out.println("nothing");
