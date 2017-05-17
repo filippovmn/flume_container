@@ -67,16 +67,24 @@ public class CommonContainer implements Container {
 
     public void addAgent(String agent, Properties properties){
         Application app = new Application();
-        AbstractConfigurationProvider provider = new simpleConfigurator(agent,properties);
-        app.handleConfigurationEvent(provider.getConfiguration());
-        agents.put(agent,app);
-        source.addAgent(agent,properties);
+        try {
+            AbstractConfigurationProvider provider = new simpleConfigurator(agent, properties);
+            app.handleConfigurationEvent(provider.getConfiguration());
+            agents.put(agent, app);
+            source.addAgent(agent, properties);
+        }catch (Exception ex){
+            logger.error(String.format("error while initialize new flume agent %s ", agent),ex);
+        }
     };
 
     public void deleteAgent(String agent){
-        agents.get(agent).stop();
-        agents.remove(agent);
-        source.deleteAgent(agent);
+        try {
+            agents.get(agent).stop();
+            agents.remove(agent);
+            source.deleteAgent(agent);
+        }catch (Exception ex){
+            logger.error(String.format("error while delete flume agent %s ",agent ),ex);
+        }
     }
 
     public void setSource(InitSource source) {
