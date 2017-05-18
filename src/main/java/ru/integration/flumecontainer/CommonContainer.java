@@ -3,8 +3,6 @@ package ru.integration.flumecontainer;
 import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import ru.integration.flumecontainer.config.source.InitSource;
 
 

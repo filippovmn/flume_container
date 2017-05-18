@@ -6,7 +6,7 @@
 
     <groupId>ru.integration.prj</groupId>
     <artifactId>flume_container</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <repositories>
         <repository>
@@ -14,6 +14,28 @@
             <url>https://mvnrepository.com/artifact/org.apache.flume/flume-ng-sdk</url>
         </repository>
     </repositories>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+            <!--configuration>
+                <includes>
+                    <include>**/service/*</include>
+                </includes>
+            </configuration-->
+        </plugin>
+        </plugins>
+    </build>
     <properties>
         <spring_version>4.3.7.RELEASE</spring_version>
     </properties>
@@ -33,11 +55,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <scope>test</scope>
             <version>${spring_version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <scope>test</scope>
             <version>${spring_version}</version>
         </dependency>
 
@@ -48,5 +72,4 @@
             <version>2.0.0</version>
         </dependency>
     </dependencies>
-
 </project>

@@ -1,0 +1,8 @@
+ru\integration\flumecontainer\CommonContainer.class
+ru\integration\flumecontainer\config\source\InitSourceFileList.class
+ru\integration\flumecontainer\config\source\InitSource.class
+ru\integration\flumecontainer\config\source\hsqlembsource\HSQLPrepare.class
+ru\integration\flumecontainer\config\source\hsqlembsource\HSQLAgent.class
+ru\integration\flumecontainer\config\source\InitSourceHSQLEmbedded.class
+ru\integration\flumecontainer\Container.class
+ru\integration\flumecontainer\simpleConfigurator.class

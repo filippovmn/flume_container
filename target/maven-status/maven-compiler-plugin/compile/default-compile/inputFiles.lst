@@ -1,6 +1,8 @@
-F:\github\flume_container\src\main\java\ru\integration\prj\config\source\initSource.java
-F:\github\flume_container\src\main\java\ru\integration\prj\simpleConfigurator.java
-F:\github\flume_container\src\main\java\ru\integration\prj\Container.java
-F:\github\flume_container\src\main\java\ru\integration\prj\CommonContainer.java
-F:\github\flume_container\src\main\java\ru\integration\prj\AppConfig.java
-F:\github\flume_container\src\main\java\ru\integration\prj\config\source\initSourceInMemory.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\Container.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\simpleConfigurator.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\config\source\InitSource.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\config\source\hsqlembsource\HSQLPrepare.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\config\source\InitSourceFileList.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\CommonContainer.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\config\source\InitSourceHSQLEmbedded.java
+F:\github\flume_container\src\main\java\ru\integration\flumecontainer\config\source\hsqlembsource\HSQLAgent.java
