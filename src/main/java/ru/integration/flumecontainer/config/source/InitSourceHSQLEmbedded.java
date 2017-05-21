@@ -1,9 +1,11 @@
 package ru.integration.flumecontainer.config.source;
 
 import org.apache.log4j.Logger;
+import ru.integration.flumecontainer.unit.Unit;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -31,15 +33,23 @@ public class InitSourceHSQLEmbedded implements InitSource {
         return null;
     }
 
-    public List<String> getAgents() {
+    public Unit getUnit(String unitName) {
         return null;
     }
 
-    public void addAgent(String agent, Properties properties) {
+    public Map<String, Unit> getUnits() {
+        return null;
+    }
+
+    public void addUnit(String unitName, Properties properties) {
 
     }
 
-    public void deleteAgent(String agent) {
+    public void addUnit(String unitName, Properties properties, List<String> tags) {
+
+    }
+
+    public void deleteUnit(String unitName) {
 
     }
 

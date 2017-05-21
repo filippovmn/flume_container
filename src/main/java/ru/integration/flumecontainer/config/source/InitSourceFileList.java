@@ -1,6 +1,9 @@
 package ru.integration.flumecontainer.config.source;
 
 import org.apache.log4j.Logger;
+import ru.integration.flumecontainer.unit.Unit;
+import ru.integration.flumecontainer.unit.UnitImpl;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -14,7 +17,7 @@ public class InitSourceFileList implements InitSource {
 
     private List<String> files;
 
-    HashMap<String,Properties> source=new HashMap();
+    HashMap<String,Unit> source=new HashMap();
 /*
     {
         files= new ArrayList<String>();
@@ -22,27 +25,32 @@ public class InitSourceFileList implements InitSource {
     }
 */
 
-    public Properties getProperties(String agent){
-        Properties properties=source.get(agent);
-        System.out.println(properties.toString());
-        return properties;
+    public Unit getUnit(String unitName){
+        Unit unit=source.get(unitName);
+        return unit;
     }
 
-    public List<String> getAgents(){
-        ArrayList<String> agents=new ArrayList<String>();
-        for(Map.Entry<String ,Properties> entry:source.entrySet()){
-            System.out.println("agent: "+entry.getKey());
-            agents.add(entry.getKey());
+    public Map<String,Unit> getUnits(){
+        return this.source;
+    }
+
+    public void addUnit(String unitName, Properties properties){
+        Unit unit=new UnitImpl(unitName,properties);
+        source.put(unitName,unit);
+    }
+
+    public void addUnit(String unitName, Properties properties, List<String> tags) {
+        Unit unit=new UnitImpl(unitName,properties);
+        unit.setTags(tags);
+        source.put(unitName,unit);
+    }
+
+    public void deleteUnit(String unitName){
+        Unit unit=source.get(unitName);
+        if(unit.getStatus()== UnitImpl.Status.STARTED){
+            unit.stop();
         }
-        return agents;
-    }
-
-    public void addAgent(String agent,Properties properties){
-        source.put(agent,properties);
-    }
-
-    public void deleteAgent(String agent){
-        source.remove(agent);
+        source.remove(unitName);
     }
 
     public Object getSourceInitializer() {
@@ -68,7 +76,8 @@ public class InitSourceFileList implements InitSource {
                     Properties props = new Properties();
                     props.load(new FileInputStream(file));
                     String[] tree = file.split("[.]")[0].split("[/]");
-                    source.put(tree[tree.length - 1], props);
+                    source.put(tree[tree.length - 1],new UnitImpl(tree[tree.length - 1],
+                                                                  props));
                 } catch (IOException e) {
                     logger.error("error " + e.toString());
                 }
