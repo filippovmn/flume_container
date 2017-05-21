@@ -20,15 +20,6 @@ public class CommonContainer implements Container {
 
     public boolean init(){
         try{
-            logger.info("start initialize");
-            Map<String,Unit> units=source.getUnits();
-            for(String unitName:units.keySet()) {
-                logger.info(String.format("init %s agent", unitName));
-                Unit unit=units.get(unitName);
-                units.put(unitName,unit);
-                logger.info(String.format("%s agent initialized", unitName));
-            }
-            logger.info("end init");
             return true;
         }catch(Exception ex){
             logger.error("error in init: "+ex.toString());

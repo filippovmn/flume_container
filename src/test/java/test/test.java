@@ -24,8 +24,8 @@ public class test {
             System.out.println("start");
             container.init();
             try {
-                Thread.sleep(2000);
                 container.startAll();
+                Thread.sleep(2000);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

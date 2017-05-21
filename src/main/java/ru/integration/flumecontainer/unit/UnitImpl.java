@@ -2,6 +2,7 @@ package ru.integration.flumecontainer.unit;
 
 import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
+import org.apache.log4j.Logger;
 import ru.integration.flumecontainer.simpleConfigurator;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.Properties;
  * Created by semya on 17.05.2017.
  */
 public class UnitImpl implements Unit {
+
+    Logger logger= Logger.getLogger(UnitImpl.class);
 
     String unitName;
     Properties properties;
@@ -56,19 +59,23 @@ public class UnitImpl implements Unit {
 
     public void start() {
        try {
+           System.out.println("Start: "+unitName);
            if(status==Status.READY||status==Status.STOPPED) {
                AbstractConfigurationProvider provider = new simpleConfigurator(unitName,properties);
                unit.handleConfigurationEvent(provider.getConfiguration());
                this.unit.start();
                status=Status.STARTED;
+               System.out.println("Started: "+unitName);
            }else{
                throw new IllegalStateException(String.format(
                        "Status must be READY or STOPPED but %s",status ));
            }
        }catch (IllegalStateException e){
+           System.out.println("error1: "+unitName + " "+e);
            status=Status.FAULT;
        }
        catch(Exception e){
+           System.out.println("error2: "+unitName + " "+e);
            status=Status.FAULT;
        }
     }
