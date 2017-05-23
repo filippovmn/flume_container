@@ -57,9 +57,9 @@ public class InitSourceHSQLEmbedded implements InitSource {
         return connectionString;
     }
 
-    public void setSourceInitializer(Object initializer) {
+    public void setSourceInitializer(Properties initializer) {
         try {
-            this.connectionString = (String) initializer;
+            //this.connectionString = (String) initializer;
         }catch(ClassCastException ex){
 
             logger.error(String.format(

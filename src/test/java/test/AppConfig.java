@@ -6,11 +6,7 @@ import ru.integration.flumecontainer.CommonContainer;
 import ru.integration.flumecontainer.Container;
 import ru.integration.flumecontainer.config.source.InitSource;
 import ru.integration.flumecontainer.config.source.InitSourceFileList;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Arrays.asList;
+import java.util.Properties;
 
 /**
  * Created by mfilippov on 2017-04-18.
@@ -21,10 +17,11 @@ public class AppConfig {
 
     @Bean
     InitSource initSource(){
-        List<String> initializer=asList("src/main/resources/my-agent.properties");
+        Properties initializer=new Properties();
+        initializer.put("flume.source.dir","src/main/resources");
+        initializer.put("flume.source.conf-pattern",".*\\.conf");
         InitSource source = new InitSourceFileList();
         source.setSourceInitializer(initializer);
-        source.init();
         return  source;
     }
 
