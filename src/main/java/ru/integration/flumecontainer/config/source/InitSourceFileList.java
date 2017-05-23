@@ -4,9 +4,12 @@ import org.apache.log4j.Logger;
 import ru.integration.flumecontainer.unit.Unit;
 import ru.integration.flumecontainer.unit.UnitImpl;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mfilippov on 2017-04-18.
@@ -15,9 +18,11 @@ public class InitSourceFileList implements InitSource {
     Logger logger= Logger.getLogger(InitSourceFileList.class);
 
 
-    private List<String> files;
+    private List<String> files = new ArrayList<String>();
 
     HashMap<String,Unit> source=new HashMap();
+
+    Properties initializer=null;
 /*
     {
         files= new ArrayList<String>();
@@ -57,33 +62,50 @@ public class InitSourceFileList implements InitSource {
         return files;
     }
 
-    public void setSourceInitializer(Object initializer) {
-        try {
-            this.files = (List<String>) initializer;
-        }catch(ClassCastException ex){
-
-            logger.error(String.format(
-                    "Initializer must be a List<String>, found: %s", initializer.getClass().toString()),ex);
-            throw new IllegalArgumentException(String.format(
-                    "Initializer must be a List<String>, found: %s", initializer.getClass().toString()),ex);
-        }
+    public void setSourceInitializer(Properties initializer) {
+        this.initializer=initializer;
     }
 
     public void init() {
-        if(files!=null) {
-            for (String file : files) {
-                try {
-                    Properties props = new Properties();
-                    props.load(new FileInputStream(file));
-                    String[] tree = file.split("[.]")[0].split("[/]");
-                    source.put(tree[tree.length - 1],new UnitImpl(tree[tree.length - 1],
-                                                                  props));
-                } catch (IOException e) {
-                    logger.error("error " + e.toString());
+        try {
+            String directory = initializer.getProperty("flume.source.dir", null);
+            if (directory==null){
+                throw new CouldNotFindPropertyException("Directory is not set");
+            }
+            String propPattern = initializer.getProperty("flume.source.conf-pattern", null);
+            if(propPattern==null){
+                logger.info("File pattern is not set!");
+            }
+            Pattern pattern = Pattern.compile(propPattern);
+            File dir = new File(directory);
+            if (dir.isDirectory()) {
+                for (File file : dir.listFiles()) {
+                    String name = file.getName();
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        logger.info("found "+file.getName());
+                        this.files.add(file.getAbsolutePath());
+                    }
                 }
             }
-        }else{
-            logger.warn("source is empty!");
+            if (files != null&&files.size()>0) {
+                for (String file : files) {
+                    try {
+                        logger.info("initialize file " + file);
+                        Properties props = new Properties();
+                        props.load(new FileInputStream(file));
+                        String filname = new File(file).getName().split("\\.")[0];
+                        source.put(filname, new UnitImpl(filname,props));
+                    } catch (IOException e) {
+                        logger.error("error " + e.toString());
+                    }
+                }
+            } else {
+                logger.warn("source is empty!");
+            }
+        } catch (Exception ex) {
+            logger.error("Initialization failed ", ex);
+            throw new IllegalArgumentException("Initialization failed ", ex);
         }
     }
 }

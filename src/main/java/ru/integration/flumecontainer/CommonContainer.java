@@ -20,6 +20,7 @@ public class CommonContainer implements Container {
 
     public boolean init(){
         try{
+            source.init();
             return true;
         }catch(Exception ex){
             logger.error("error in init: "+ex.toString());

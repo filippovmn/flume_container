@@ -2,6 +2,7 @@ package ru.integration.flumecontainer.unit;
 
 import org.apache.flume.node.AbstractConfigurationProvider;
 import org.apache.flume.node.Application;
+import org.apache.flume.node.ConfigurationProvider;
 import org.apache.log4j.Logger;
 import ru.integration.flumecontainer.simpleConfigurator;
 
@@ -61,7 +62,7 @@ public class UnitImpl implements Unit {
        try {
            System.out.println("Start: "+unitName);
            if(status==Status.READY||status==Status.STOPPED) {
-               AbstractConfigurationProvider provider = new simpleConfigurator(unitName,properties);
+               ConfigurationProvider provider = new simpleConfigurator(unitName,properties);
                unit.handleConfigurationEvent(provider.getConfiguration());
                this.unit.start();
                status=Status.STARTED;

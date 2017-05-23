@@ -9,7 +9,9 @@ import java.util.Properties;
 /**
  * Created by mfilippov on 2017-04-18.
  */
+
 public interface InitSource {
+
     public Unit getUnit(String unitName);
 
     public Map<String,Unit> getUnits();
@@ -22,7 +24,7 @@ public interface InitSource {
 
     public Object getSourceInitializer();
 
-    public void setSourceInitializer(Object initializer);
+    public void setSourceInitializer(Properties initializer);
 
     public void init();
 }
