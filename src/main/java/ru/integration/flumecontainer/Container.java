@@ -21,6 +21,10 @@ public interface Container {
 
     public void stopAll();
 
+    public void load();
+
+    public void reload();
+
     public UnitImpl.Status startUnit(String unitName);
 
     public UnitImpl.Status stopUnit(String unitName);

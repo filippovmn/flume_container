@@ -1,6 +1,7 @@
 package ru.integration.flumecontainer.config.source;
 
 import org.apache.log4j.Logger;
+import ru.integration.flumecontainer.config.source.jdbc.DatabasePrepare;
 import ru.integration.flumecontainer.unit.Unit;
 
 import java.sql.*;
@@ -11,21 +12,34 @@ import java.util.Properties;
 /**
  * Created by semya on 15.05.2017.
  */
-public class InitSourceHSQLEmbedded implements InitSource {
-    Logger logger= Logger.getLogger(InitSourceHSQLEmbedded.class);
+public class InitSourceJDBC implements InitSource {
+
+    Logger logger= Logger.getLogger(InitSourceJDBC.class);
+
+    Properties initializer;
+
+    String driverName;
+    //"jdbc:h2:~/test"
     String connectionString;
+    //"test"
+    String login;
+
+    String password;
 
     Connection connection;
 
-    InitSourceHSQLEmbedded(){
+    private void InitConnection(){
         try {
-            Class.forName("org.h2.Driver");
-            connection = DriverManager.getConnection("jdbc:h2:~/test", "test", "" );
+            Class.forName(this.driverName);
+            this.connection = DriverManager.getConnection(this.connectionString, this.login, this.password );
         }catch (SQLException e) {
             logger.error("Error while init connection ",e);
         }catch (ClassNotFoundException e) {
             logger.error("Error while init connection ",e);
         }
+    }
+    private void InitDB(){
+
     }
 
 
@@ -54,22 +68,19 @@ public class InitSourceHSQLEmbedded implements InitSource {
     }
 
     public Object getSourceInitializer() {
-        return connectionString;
+        return this.initializer;
     }
 
     public void setSourceInitializer(Properties initializer) {
-        try {
-            //this.connectionString = (String) initializer;
-        }catch(ClassCastException ex){
-
-            logger.error(String.format(
-                    "Initializer must be a String, found: %s", initializer.getClass().toString()),ex);
-            throw new IllegalArgumentException(String.format(
-                    "Initializer must be a String, found: %s", initializer.getClass().toString()),ex);
-        }
+            this.initializer=initializer;
     }
 
     public void init() {
-
+        this.connectionString = initializer.getProperty("initsourcejdbc.connection_string");
+        this.login = initializer.getProperty("initsourcejdbc.login");
+        this.password = initializer.getProperty("initsourcejdbc.password");
+        this.driverName = initializer.getProperty("initsourcejdbc.drivername");
+        this.InitConnection();
+        DatabasePrepare dbPrepare=new DatabasePrepare(this.connection);
     }
 }

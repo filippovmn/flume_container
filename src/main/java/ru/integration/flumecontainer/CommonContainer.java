@@ -31,15 +31,24 @@ public class CommonContainer implements Container {
                 return  false;
             }
         }catch(Exception ex){
-            logger.error("error in init: "+ex.toString());
+            logger.error("Error in init: "+ex.toString());
             return false;
         }
-    };
+    }
 
     public boolean destroy(){
         stopAll();
         return true;
     }
+
+    public void load() {
+
+    }
+
+    public void reload() {
+
+    }
+
     public void startAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
             try {
@@ -50,7 +59,7 @@ public class CommonContainer implements Container {
                 logger.error("error while starting: "+e.toString());
             }
         }
-    };
+    }
 
     public void stopAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
@@ -62,7 +71,7 @@ public class CommonContainer implements Container {
                 System.out.println("error while stopping: "+e.toString());
             }
         }
-    };
+    }
 
     public UnitImpl.Status startUnit(String unitName){
         Unit unit=source.getUnit(unitName);
@@ -85,7 +94,7 @@ public class CommonContainer implements Container {
         }catch (Exception ex){
             logger.error(String.format("error while initialize new flume agent %s ", unit),ex);
         }
-    };
+    }
 
     public void deleteUnit(String unit){
         try {
@@ -111,6 +120,4 @@ public class CommonContainer implements Container {
         }
         return info;
     }
-
-
 }
