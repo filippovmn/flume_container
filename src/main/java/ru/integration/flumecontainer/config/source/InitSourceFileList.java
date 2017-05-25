@@ -59,7 +59,7 @@ public class InitSourceFileList implements InitSource {
     }
 
     public Object getSourceInitializer() {
-        return files;
+        return initializer;
     }
 
     public void setSourceInitializer(Properties initializer) {
@@ -79,6 +79,7 @@ public class InitSourceFileList implements InitSource {
             Pattern pattern = Pattern.compile(propPattern);
             File dir = new File(directory);
             if (dir.isDirectory()) {
+                logger.info("Search in dir:"+dir.getName());
                 for (File file : dir.listFiles()) {
                     String name = file.getName();
                     Matcher matcher = pattern.matcher(name);
@@ -87,11 +88,13 @@ public class InitSourceFileList implements InitSource {
                         this.files.add(file.getAbsolutePath());
                     }
                 }
+            }else{
+                logger.info("Not a directory: "+directory);
             }
             if (files != null&&files.size()>0) {
                 for (String file : files) {
                     try {
-                        logger.info("initialize file " + file);
+                        logger.info("Initialize file " + file);
                         Properties props = new Properties();
                         props.load(new FileInputStream(file));
                         String filname = new File(file).getName().split("\\.")[0];
@@ -101,11 +104,10 @@ public class InitSourceFileList implements InitSource {
                     }
                 }
             } else {
-                logger.warn("source is empty!");
+                logger.warn("Source is empty!");
             }
         } catch (Exception ex) {
             logger.error("Initialization failed ", ex);
-            throw new IllegalArgumentException("Initialization failed ", ex);
         }
     }
 }

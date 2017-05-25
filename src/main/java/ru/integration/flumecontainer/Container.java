@@ -15,6 +15,8 @@ public interface Container {
 
     public boolean init();
 
+    public boolean destroy();
+
     public void startAll();
 
     public void stopAll();

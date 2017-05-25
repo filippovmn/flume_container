@@ -14,25 +14,40 @@ import java.util.*;
  */
 public class CommonContainer implements Container {
 
-    Logger logger= Logger.getLogger(CommonContainer.class);
+    private Logger logger= Logger.getLogger(CommonContainer.class);
 
-    InitSource source;
+    private InitSource source;
+
+    private boolean initCompleted=false;
 
     public boolean init(){
         try{
-            source.init();
-            return true;
+            if(!initCompleted) {
+                source.init();
+                initCompleted = true;
+                return true;
+            }else{
+                logger.error("You can not re-initialize container.");
+                return  false;
+            }
         }catch(Exception ex){
             logger.error("error in init: "+ex.toString());
             return false;
         }
     };
+
+    public boolean destroy(){
+        stopAll();
+        return true;
+    }
     public void startAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
             try {
-            entry.getValue().start();
+                if(entry.getValue().getStatus()!= UnitImpl.Status.STARTED) {
+                    entry.getValue().start();
+                }
             }catch (Exception e){
-                System.out.println("error while starting: "+e.toString());
+                logger.error("error while starting: "+e.toString());
             }
         }
     };
@@ -40,7 +55,9 @@ public class CommonContainer implements Container {
     public void stopAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
             try {
-                entry.getValue().stop();
+                if(entry.getValue().getStatus() == UnitImpl.Status.STARTED) {
+                    entry.getValue().stop();
+                }
             }catch (Exception e){
                 System.out.println("error while stopping: "+e.toString());
             }
@@ -48,11 +65,16 @@ public class CommonContainer implements Container {
     };
 
     public UnitImpl.Status startUnit(String unitName){
-        source.getUnit(unitName).start();
+        Unit unit=source.getUnit(unitName);
+        if(unit.getStatus() != UnitImpl.Status.STARTED) {
+            source.getUnit(unitName).start();
+        }
         return source.getUnit(unitName).getStatus();
     }
 
     public UnitImpl.Status stopUnit(String unitName) {
+        Unit unit=source.getUnit(unitName);
+        if(unit.getStatus() == UnitImpl.Status.STARTED)
         source.getUnit(unitName).stop();
         return source.getUnit(unitName).getStatus();
     }
@@ -67,7 +89,7 @@ public class CommonContainer implements Container {
 
     public void deleteUnit(String unit){
         try {
-            source.getUnit(unit).stop();
+            stopUnit(unit);
             source.deleteUnit(unit);
         }catch (Exception ex){
             logger.error(String.format("error while delete flume agent %s ", unit),ex);

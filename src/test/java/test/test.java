@@ -13,12 +13,6 @@ public class test {
                 new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class);
         ctx.refresh();
-        String[] beanNames = ctx.getBeanDefinitionNames();
-
-        for (String beanName : beanNames) {
-
-            System.out.println(beanName + " : " + ctx.getBean(beanName).getClass().toString());
-        }
         Container container= (Container) ctx.getBean("container");
         if(container!=null) {
             System.out.println("start");
@@ -30,7 +24,7 @@ public class test {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            container.stopAll();
+            container.destroy();
         }else {
             System.out.println("nothing");
         }
