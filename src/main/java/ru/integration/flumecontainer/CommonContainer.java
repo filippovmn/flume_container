@@ -41,14 +41,6 @@ public class CommonContainer implements Container {
         return true;
     }
 
-    public void load() {
-
-    }
-
-    public void reload() {
-
-    }
-
     public void startAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
             try {
@@ -104,6 +96,13 @@ public class CommonContainer implements Container {
             logger.error(String.format("error while delete flume agent %s ", unit),ex);
         }
     }
+
+    public void reconfigure(String unitName, Properties properties){
+        stopUnit(unitName);
+        source.getUnit(unitName).setProperties(properties);
+        startUnit(unitName);
+    }
+
 
     public void setSource(InitSource source) {
         this.source=source;

@@ -21,10 +21,6 @@ public interface Container {
 
     public void stopAll();
 
-    public void load();
-
-    public void reload();
-
     public UnitImpl.Status startUnit(String unitName);
 
     public UnitImpl.Status stopUnit(String unitName);
@@ -32,6 +28,8 @@ public interface Container {
     public void addUnit(String unit, Properties properties);
 
     public void deleteUnit(String unit);
+
+    public void reconfigure(String unitName, Properties properties);
 
     public void setSource(InitSource source);
 
