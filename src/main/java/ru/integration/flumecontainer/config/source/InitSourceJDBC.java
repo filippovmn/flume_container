@@ -5,6 +5,7 @@ import ru.integration.flumecontainer.config.source.jdbc.DatabasePrepare;
 import ru.integration.flumecontainer.unit.Unit;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,6 +16,8 @@ import java.util.Properties;
 public class InitSourceJDBC implements InitSource {
 
     Logger logger= Logger.getLogger(InitSourceJDBC.class);
+
+    HashMap<String,Unit> source = new HashMap();
 
     Properties initializer;
 

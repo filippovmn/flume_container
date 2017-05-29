@@ -13,6 +13,13 @@ import ru.integration.flumecontainer.config.source.InitSourceFileList;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -22,7 +29,7 @@ import java.util.Properties;
 @Configuration
 public class AppConfig {
 
-    @Bean
+    /*@Bean
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         //builder.setName("testdb");
@@ -32,10 +39,28 @@ public class AppConfig {
                 .addScript("sql_init/insert-data.sql")
                 .build();
         return db;
-    }
+    }*/
 
     @Bean
     InitSource initSource(){
+        try {
+            Connection c = DriverManager.getConnection("jdbc:hsqldb:file:testdb", "SA", "");
+            Statement stmt=c.createStatement();
+            FileReader reader =new FileReader("src/test/resources/sql_init/confRegistry_mysql_create.sql");
+            StringBuilder builder= new StringBuilder();
+            char[] buffer = new char[100];
+            while(reader.read(buffer)!=-1)
+                builder.append(buffer);
+            reader.close();
+            System.out.println(builder.toString());
+            //stmt.execute(builder.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Properties initializer=new Properties();
         initializer.put("flume.source.dir","src/test/resources");
         initializer.put("flume.source.conf-pattern",".*\\.conf");
@@ -50,9 +75,9 @@ public class AppConfig {
         container.setSource(initSource());
         return container;
     }
-    /*@PostConstruct
+    @PostConstruct
     public void startDBManager() {
         DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:testdb", "--user", "sa", "--password", "" });
 
-    }*/
+    }
 }
