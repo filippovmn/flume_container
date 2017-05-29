@@ -44,7 +44,7 @@ public class CommonContainer implements Container {
     public void startAll(){
         for(Map.Entry<String ,Unit> entry:source.getUnits().entrySet()){
             try {
-                if(entry.getValue().getStatus()!= UnitImpl.Status.STARTED) {
+                if(entry.getValue().getStatus()!= UnitImpl.Status.STARTED&&entry.getValue().getStatus()!= UnitImpl.Status.FAULT) {
                     entry.getValue().start();
                 }
             }catch (Exception e){

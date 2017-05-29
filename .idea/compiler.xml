@@ -9,7 +9,7 @@
         <module name="flume_container" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.5">
       <module name="flume_container" target="1.5" />
     </bytecodeTargetLevel>
   </component>
