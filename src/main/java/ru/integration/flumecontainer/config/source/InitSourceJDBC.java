@@ -1,9 +1,18 @@
 package ru.integration.flumecontainer.config.source;
 
+import org.apache.commons.dbcp2.*;
+import org.apache.commons.pool2.ObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.log4j.Logger;
+import org.hsqldb.cmdline.SqlFile;
+import org.hsqldb.cmdline.SqlToolError;
 import ru.integration.flumecontainer.config.source.jdbc.DatabasePrepare;
 import ru.integration.flumecontainer.unit.Unit;
 
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
@@ -17,33 +26,21 @@ public class InitSourceJDBC implements InitSource {
 
     Logger logger= Logger.getLogger(InitSourceJDBC.class);
 
-    HashMap<String,Unit> source = new HashMap();
+    private HashMap<String,Unit> source = new HashMap();
 
-    Properties initializer;
+    private Properties initializer;
 
-    String driverName;
+    private DataSource dataSource;
+
+    private String driverName;
     //"jdbc:h2:~/test"
-    String connectionString;
+    private String uri;
     //"test"
-    String login;
+    private String login;
 
-    String password;
+    private String password;
 
-    Connection connection;
-
-    private void InitConnection(){
-        try {
-            Class.forName(this.driverName);
-            this.connection = DriverManager.getConnection(this.connectionString, this.login, this.password );
-        }catch (SQLException e) {
-            logger.error("Error while init connection ",e);
-        }catch (ClassNotFoundException e) {
-            logger.error("Error while init connection ",e);
-        }
-    }
-    private void InitDB(){
-
-    }
+    private String shema_sql;
 
 
     public Properties getProperties(String agent) {
@@ -79,11 +76,40 @@ public class InitSourceJDBC implements InitSource {
     }
 
     public void init() {
-        this.connectionString = initializer.getProperty("initsourcejdbc.connection_string");
+        this.uri = initializer.getProperty("initsourcejdbc.connection_string");
         this.login = initializer.getProperty("initsourcejdbc.login");
         this.password = initializer.getProperty("initsourcejdbc.password");
-        this.driverName = initializer.getProperty("initsourcejdbc.drivername");
-        this.InitConnection();
-        DatabasePrepare dbPrepare=new DatabasePrepare(this.connection);
+        this.shema_sql = initializer.getProperty("initsourcejdbc.shema_sql");
+        //this.driverName = initializer.getProperty("initsourcejdbc.drivername");
+        this.initDataSource(this.uri, this.login, this.password);
+        DatabasePrepare dbPrepare=new DatabasePrepare(this.dataSource,this.shema_sql);
+        dbPrepare.prepare();
+    }
+
+    public void initDataSource(String uri,String  login,String password){
+        try {
+
+            ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(uri, login, password);
+            PoolableConnectionFactory poolableConnectionFactory =
+                    new PoolableConnectionFactory(connectionFactory, null);
+            ObjectPool<PoolableConnection> connectionPool =
+                    new GenericObjectPool<PoolableConnection>(poolableConnectionFactory);
+            poolableConnectionFactory.setPool(connectionPool);
+            dataSource = new PoolingDataSource<PoolableConnection>(connectionPool);
+
+            SqlFile sqlFile=new SqlFile(new File("src/test/resources/sql_init/confRegistry_mysql_create.sql"));
+            sqlFile.setConnection(dataSource.getConnection());
+            sqlFile.setAutoClose(true);
+            sqlFile.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SqlToolError sqlToolError) {
+            sqlToolError.printStackTrace();
+        }
     }
 }

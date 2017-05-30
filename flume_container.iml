@@ -73,6 +73,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-dbcp2:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.hsqldb:hsqldb:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: org.hsqldb:sqltool:2.3.3" level="project" />
   </component>
 </module>
