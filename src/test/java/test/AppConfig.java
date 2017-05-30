@@ -1,11 +1,10 @@
 package test;
 
-import org.hsqldb.util.DatabaseManagerSwing;
+import org.apache.commons.dbcp2.*;
+import org.apache.commons.pool2.ObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ru.integration.flumecontainer.CommonContainer;
 import ru.integration.flumecontainer.Container;
 import ru.integration.flumecontainer.config.source.InitSource;
@@ -16,8 +15,7 @@ import javax.sql.DataSource;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -40,27 +38,42 @@ public class AppConfig {
                 .build();
         return db;
     }*/
-
     @Bean
-    InitSource initSource(){
+    public DataSource dataSource(){
+        PoolingDataSource<PoolableConnection> dataSource=null;
         try {
-            Connection c = DriverManager.getConnection("jdbc:hsqldb:file:testdb", "SA", "");
-            Statement stmt=c.createStatement();
+
+            ConnectionFactory connectionFactory = new DriverManagerConnectionFactory("jdbc:hsqldb:file:testdb;ifexists=true", "SA", "");
+            PoolableConnectionFactory poolableConnectionFactory =
+                    new PoolableConnectionFactory(connectionFactory, null);
+            ObjectPool<PoolableConnection> connectionPool =
+                    new GenericObjectPool<PoolableConnection>(poolableConnectionFactory);
+            poolableConnectionFactory.setPool(connectionPool);
+            dataSource = new PoolingDataSource<PoolableConnection>(connectionPool);
+
             FileReader reader =new FileReader("src/test/resources/sql_init/confRegistry_mysql_create.sql");
             StringBuilder builder= new StringBuilder();
-            char[] buffer = new char[100];
-            while(reader.read(buffer)!=-1)
-                builder.append(buffer);
+            //char[] buffer = new char[100];
+            int chr;
+            while((chr=reader.read())!=-1)
+                builder.append((char)chr);
             reader.close();
             System.out.println(builder.toString());
-            //stmt.execute(builder.toString());
+            PreparedStatement statement=dataSource.getConnection().prepareStatement(builder.toString());
+            //statement.execute(builder.toString());
+            return dataSource;
         } catch (SQLException e) {
-            e.printStackTrace();
+              e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return dataSource;
+    }
+
+    @Bean
+    InitSource initSource(){
         Properties initializer=new Properties();
         initializer.put("flume.source.dir","src/test/resources");
         initializer.put("flume.source.conf-pattern",".*\\.conf");
@@ -77,7 +90,7 @@ public class AppConfig {
     }
     @PostConstruct
     public void startDBManager() {
-        DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:testdb", "--user", "sa", "--password", "" });
+        //DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:testdb", "--user", "sa", "--password", "" });
 
     }
 }

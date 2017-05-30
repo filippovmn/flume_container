@@ -1,11 +1,12 @@
-CREATE TABLE Units (
+use testdb;
+CREATE TABLE  IF NOT EXISTS  Units (
 	U_Id varchar(36) NOT NULL,
 	U_Name varchar(40) NOT NULL UNIQUE,
 	U_Comment varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY (U_Id)
 );
 
-CREATE TABLE Properties (
+CREATE TABLE  IF NOT EXISTS  Properties (
 	P_Id varchar(36) NOT NULL,
 	P_Key varchar(200) NOT NULL,
 	P_Value varchar(200) NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE Properties (
 	PRIMARY KEY (P_Id)
 );
 
-CREATE TABLE Tags (
+CREATE TABLE  IF NOT EXISTS  Tags (
 	T_Id varchar(36) NOT NULL,
 	T_Tag varchar(40) NOT NULL,
 	T_U_Id varchar(36) NOT NULL,
